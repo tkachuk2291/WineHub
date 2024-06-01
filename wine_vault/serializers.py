@@ -21,7 +21,7 @@ class WineTypeSerializer(serializers.ModelSerializer):
         fields = ("type",)
 
 
-class AllWinesSerializer(serializers.ModelSerializer):
+class WinesSerializer(serializers.ModelSerializer):
     rating = RatingSerializer()
     location = LocationSerializers()
     wine_type = WineTypeSerializer()
