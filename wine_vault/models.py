@@ -45,9 +45,14 @@ class Wine(models.Model):
     name = models.CharField(max_length=255)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
-    image_upload = models.ImageField(upload_to=upload_to, null=False)
-    image_url = models.URLField()
+    image_upload = models.ImageField(upload_to=upload_to, null=True , blank=True)
+    image_url = models.URLField(null=True)
     vintage = models.PositiveIntegerField(max_length=4, null=True)
 
     def __str__(self):
         return f"{self.name} ({self.vintage})"
+
+    def save(self, *args, **kwargs):
+        if not self.image_upload:
+            self.image_upload = None
+        super().save(*args, **kwargs)

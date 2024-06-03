@@ -9,8 +9,11 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
+
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -19,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k^(up0gi)a0spjn(#3%n&lxax*=+2c4tth-&7&ow(xf_-1=-5@'
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['locallhost', '6965-176-37-22-78.ngrok-free.app' , "127.0.0.1"]
+ALLOWED_HOSTS = ['locallhost', '6965-176-37-22-78.ngrok-free.app', "127.0.0.1"]
 
 # Application definition
 
@@ -119,14 +122,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # S3 BUCKETS CONFIG
 
-AWS_ACCESS_KEY_ID = 'AKIAYS2NSSFKBU3PYHVM'
-AWS_SECRET_ACCESS_KEY = "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"
-
-AWS_STORAGE_BUCKET_NAME = "winehubucket2291"
-
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 AWS_S3_SIGNATURE_VERSION = 's3v4'
-# DEFAULT_FILE_STORAGE =

@@ -40,6 +40,7 @@ class Command(BaseCommand):
                     location=location,
                     rating=rating,
                     image_url=item.get("image"),
+                    image_upload=None,
                     wine_type=wine_type,
                     vintage=vintage
                 )
