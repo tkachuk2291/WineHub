@@ -1,9 +1,9 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
 from wine_vault.models import Wine
-from wine_vault.serializers import WinesSerializer, ImageSerializer
+from wine_vault.serializers import WinesSerializer, ImageSerializer, WineCreateSerializer
+import random
 
 
 def filtering_query(type_wine_filtering, params):
@@ -56,6 +56,8 @@ class RedWineViewSet(viewsets.ModelViewSet):
             return WinesSerializer
         elif self.action == "upload_image":
             return ImageSerializer
+        elif self.action == "create":
+            return WineCreateSerializer
         return WinesSerializer
 
     @action(methods=["POST"], detail=True, url_path="upload-image")
@@ -69,15 +71,29 @@ class RedWineViewSet(viewsets.ModelViewSet):
 
 class WhiteWineViewSet(viewsets.ModelViewSet):
     model = Wine
-    serializer_class = WinesSerializer
 
+    def get_serializer_class(self):
+        if self.action == "list":
+            return WinesSerializer
+        elif self.action == "upload_image":
+            return ImageSerializer
+        elif self.action == "create":
+            return WineCreateSerializer
+        return WinesSerializer
     def get_queryset(self):
         return filtering_query(type_wine_filtering="white", params=self)
 
 
 class SparklingWineViewSet(viewsets.ModelViewSet):
     model = Wine
-    serializer_class = WinesSerializer
+    def get_serializer_class(self):
+        if self.action == "list":
+            return WinesSerializer
+        elif self.action == "upload_image":
+            return ImageSerializer
+        elif self.action == "create":
+            return WineCreateSerializer
+        return WinesSerializer
 
     def get_queryset(self):
         return filtering_query(type_wine_filtering="sparkling", params=self)
@@ -85,7 +101,15 @@ class SparklingWineViewSet(viewsets.ModelViewSet):
 
 class RoseWineViewSet(viewsets.ModelViewSet):
     model = Wine
-    serializer_class = WinesSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return WinesSerializer
+        elif self.action == "upload_image":
+            return ImageSerializer
+        elif self.action == "create":
+            return WineCreateSerializer
+        return WinesSerializer
 
     def get_queryset(self):
         return filtering_query(type_wine_filtering="rose", params=self)
@@ -93,7 +117,15 @@ class RoseWineViewSet(viewsets.ModelViewSet):
 
 class DessertWineViewSet(viewsets.ModelViewSet):
     model = Wine
-    serializer_class = WinesSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return WinesSerializer
+        elif self.action == "upload_image":
+            return ImageSerializer
+        elif self.action == "create":
+            return WineCreateSerializer
+        return WinesSerializer
 
     def get_queryset(self):
         return filtering_query(type_wine_filtering="dessert", params=self)
@@ -101,7 +133,15 @@ class DessertWineViewSet(viewsets.ModelViewSet):
 
 class PortWineViewSet(viewsets.ModelViewSet):
     model = Wine
-    serializer_class = WinesSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return WinesSerializer
+        elif self.action == "upload_image":
+            return ImageSerializer
+        elif self.action == "create":
+            return WineCreateSerializer
+        return WinesSerializer
 
     def get_queryset(self):
         return filtering_query(type_wine_filtering="port", params=self)
@@ -111,6 +151,14 @@ class AllWinesViewSet(viewsets.ModelViewSet):
     model = Wine
     serializer_class = WinesSerializer
     Wine.objects.all()
+    def get_serializer_class(self):
+        if self.action == "list":
+            return WinesSerializer
+        elif self.action == "upload_image":
+            return ImageSerializer
+        elif self.action == "create":
+            return WineCreateSerializer
+        return WinesSerializer
 
     def get_queryset(self):
         queryset = Wine.objects.all()
@@ -153,3 +201,11 @@ class AllWinesViewSet(viewsets.ModelViewSet):
             )
 
         return queryset.distinct()
+
+
+class PickRandomBottleWine(generics.ListAPIView):
+    model = Wine
+    serializer_class = WinesSerializer
+
+    def get_queryset(self):
+        return Wine.objects.filter(id=random.randint(1, len(Wine.objects.all())))

@@ -31,6 +31,15 @@ class WinesSerializer(serializers.ModelSerializer):
         fields = ("name", "vintage", "location", "rating", "image_url", "wine_type", "image_upload")
 
 
+class WineCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wine
+        fields = ("name", "vintage", "location", "rating", "image_url", "wine_type", "image_upload")
+
+    def create(self, validated_data):
+        return Wine.objects.create(**validated_data)
+
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wine

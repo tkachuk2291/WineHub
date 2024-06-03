@@ -14,6 +14,9 @@ class Winery(models.Model):
 class WineType(models.Model):
     type = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"{self.type} wine"
+
 
 class Location(models.Model):
     country = models.CharField(max_length=255)
@@ -32,10 +35,8 @@ class Rating(models.Model):
 
 
 def upload_to(instance, filename):
-    # Получаем тип вина
     wine_type = instance.wine_type.type
 
-    # Формируем путь
     path = Path(f"upload/wine/{wine_type}/{filename}")
     return path
 
@@ -45,7 +46,7 @@ class Wine(models.Model):
     name = models.CharField(max_length=255)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
-    image_upload = models.ImageField(upload_to=upload_to, null=True , blank=True)
+    image_upload = models.ImageField(upload_to=upload_to, null=True, blank=True)
     image_url = models.URLField(null=True)
     vintage = models.PositiveIntegerField(max_length=4, null=True)
 

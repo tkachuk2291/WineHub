@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from wine_vault.views import AllWinesViewSet, RedWineViewSet, PortWineViewSet, DessertWineViewSet, RoseWineViewSet, \
-    SparklingWineViewSet, WhiteWineViewSet
+    SparklingWineViewSet, WhiteWineViewSet, PickRandomBottleWine
 
 router = DefaultRouter()
 
@@ -14,5 +14,6 @@ router.register("rose", RoseWineViewSet, basename="rose-wines")
 router.register("dessert", DessertWineViewSet, basename="dessert-wines")
 router.register("port", PortWineViewSet, basename="port-wines")
 
-urlpatterns = [path("", include(router.urls))]
+urlpatterns = [path("", include(router.urls)),
+               path("random-bottle-wine/", PickRandomBottleWine.as_view(), name="random-bottle")]
 app_name = "wine_vault"
