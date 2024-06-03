@@ -28,4 +28,10 @@ class WinesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wine
-        fields = ("name", "vintage", "location", "rating", "image_url", "wine_type")
+        fields = ("name", "vintage", "location", "rating", "image_url", "wine_type", "image_upload")
+
+
+class ImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wine
+        fields = ("image_upload", "image_url")

@@ -1,4 +1,7 @@
+import pathlib
+
 from django.db import models
+from pathlib import Path
 
 
 class Winery(models.Model):
@@ -28,11 +31,21 @@ class Rating(models.Model):
         return f"{self.average} ({self.reviews} reviews)"
 
 
+def upload_to(instance, filename):
+    # Получаем тип вина
+    wine_type = instance.wine_type.type
+
+    # Формируем путь
+    path = Path(f"upload/wine/{wine_type}/{filename}")
+    return path
+
+
 class Wine(models.Model):
     wine_type = models.ForeignKey(WineType, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
+    image_upload = models.ImageField(upload_to=upload_to, null=False)
     image_url = models.URLField()
     vintage = models.PositiveIntegerField(max_length=4, null=True)
 

@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-k^(up0gi)a0spjn(#3%n&lxax*=+2c4tth-&7&ow(xf_-1=-5@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['locallhost', '6965-176-37-22-78.ngrok-free.app' , "127.0.0.1"]
 
 # Application definition
 
@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'rest_framework', "wine_vault", "user"
+    'django.contrib.staticfiles', 'rest_framework', "wine_vault", "user", "storages"
 ]
 
 MIDDLEWARE = [
@@ -116,3 +116,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# S3 BUCKETS CONFIG
+
+AWS_ACCESS_KEY_ID = 'AKIAYS2NSSFKBU3PYHVM'
+AWS_SECRET_ACCESS_KEY = "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"
+
+AWS_STORAGE_BUCKET_NAME = "winehubucket2291"
+
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_REGION_NAME = 'eu-north-1'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+# DEFAULT_FILE_STORAGE =

@@ -1,6 +1,9 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
 from wine_vault.models import Wine
-from wine_vault.serializers import WinesSerializer
+from wine_vault.serializers import WinesSerializer, ImageSerializer
 
 
 def filtering_query(type_wine_filtering, params):
@@ -47,6 +50,21 @@ class RedWineViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return filtering_query(type_wine_filtering="red", params=self)
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return WinesSerializer
+        elif self.action == "upload_image":
+            return ImageSerializer
+        return WinesSerializer
+
+    @action(methods=["POST"], detail=True, url_path="upload-image")
+    def upload_image(self, request):
+        wine_hub = self.get_object()
+        serializer = self.get_serializer(wine_hub, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class WhiteWineViewSet(viewsets.ModelViewSet):
