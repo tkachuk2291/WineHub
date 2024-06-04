@@ -80,12 +80,14 @@ class WhiteWineViewSet(viewsets.ModelViewSet):
         elif self.action == "create":
             return WineCreateSerializer
         return WinesSerializer
+
     def get_queryset(self):
         return filtering_query(type_wine_filtering="white", params=self)
 
 
 class SparklingWineViewSet(viewsets.ModelViewSet):
     model = Wine
+
     def get_serializer_class(self):
         if self.action == "list":
             return WinesSerializer
@@ -151,6 +153,7 @@ class AllWinesViewSet(viewsets.ModelViewSet):
     model = Wine
     serializer_class = WinesSerializer
     Wine.objects.all()
+
     def get_serializer_class(self):
         if self.action == "list":
             return WinesSerializer
@@ -209,3 +212,12 @@ class PickRandomBottleWine(generics.ListAPIView):
 
     def get_queryset(self):
         return Wine.objects.filter(id=random.randint(1, len(Wine.objects.all())))
+
+
+class BestSellers(generics.ListAPIView):
+    model = Wine
+    serializer_class = WinesSerializer
+
+    def get_queryset(self):
+        list_w = Wine.objects.filter(rating__average__gt=4.7).order_by('?')[:3]
+        return list_w

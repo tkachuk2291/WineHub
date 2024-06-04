@@ -1,11 +1,12 @@
-import pathlib
-
+from django.core.validators import MaxLengthValidator
 from django.db import models
 from pathlib import Path
 
 
 class Winery(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(
+        max_length=140, unique=True,
+        validators=[MaxLengthValidator(limit_value=100, message=f"name for wine is too long max 100")])
 
     def __str__(self):
         return self.name
@@ -43,6 +44,7 @@ def upload_to(instance, filename):
 
 class Wine(models.Model):
     wine_type = models.ForeignKey(WineType, on_delete=models.CASCADE)
+    winery = models.ForeignKey(Winery, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)

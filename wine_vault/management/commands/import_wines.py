@@ -16,7 +16,6 @@ class Command(BaseCommand):
             response = requests.get(url)
             response_json = response.json()
             wine_type, _ = WineType.objects.get_or_create(type=num[:-1] if num.endswith('s') else num)
-
             for item in response_json:
                 rating_data = item.get("rating", {})
                 winery, _ = Winery.objects.get_or_create(name=item.get("winery"))
@@ -35,13 +34,15 @@ class Command(BaseCommand):
                 wine_name = item.get("wine", "")
                 vintage_match = re.match(r'.*\d{4}$', wine_name)
                 vintage = int(wine_name[-4:]) if vintage_match else random.randint(1990, 2024)
+                print(winery)
                 wine, created = Wine.objects.get_or_create(
                     name=wine_name,
                     location=location,
+                    winery=winery,
                     rating=rating,
                     image_url=item.get("image"),
                     image_upload=None,
                     wine_type=wine_type,
-                    vintage=vintage
+                    vintage=vintage,
                 )
                 print(f"Added wine: {wine_name}") if created else print(f"Wine already exists: {wine_name}")
