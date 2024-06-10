@@ -32,9 +32,19 @@ class Command(BaseCommand):
                     reviews=rating_data.get("reviews", 0)
                 )
                 wine_name = item.get("wine", "")
+                preferences = [
+                    "Steak", "Roasted meat", "Pasta with tomato sauce", "Baked chicken", "Lamb",
+                    "Medium-aged cheeses", "Salmon", "Duck", "Mushrooms", "Grilled chicken",
+                    "Crab cakes", "Fried salmon", "Caesar salad", "Light fish (e.g., cod)", "Goat cheese",
+                    "Spicy dishes (e.g., Asian cuisine)", "Sushi", "Pork", "Oysters", "Foie gras",
+                    "Bruschetta", "Fruits", "Light salads", "Tapas", "Fried fish", "Olives",
+                    "Blue cheeses", "Chocolate desserts", "Nuts", "Fruit pies", "Baklava",
+                    "Fruit salads", "Light cakes and pies", "Ice cream"
+                ]
+                preferences = random.sample(preferences , 4)
                 vintage_match = re.match(r'.*\d{4}$', wine_name)
                 vintage = int(wine_name[-4:]) if vintage_match else random.randint(1990, 2024)
-                print(winery)
+                price = random.randint(1, 2000)
                 wine, created = Wine.objects.get_or_create(
                     name=wine_name,
                     location=location,
@@ -44,5 +54,7 @@ class Command(BaseCommand):
                     image_upload=None,
                     wine_type=wine_type,
                     vintage=vintage,
+                    price=price,
+                    preferences=preferences
                 )
                 print(f"Added wine: {wine_name}") if created else print(f"Wine already exists: {wine_name}")

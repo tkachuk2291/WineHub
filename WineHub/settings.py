@@ -38,7 +38,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles', 'rest_framework', "wine_vault", "user", "storages"
+    'django.contrib.staticfiles',
+    'rest_framework',
+    "drf_spectacular",
+    "wine_vault",
+    "user",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -133,6 +138,14 @@ AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME")
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 10
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'WineHub API',
+    'DESCRIPTION': 'WineHub Api Documentation',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }

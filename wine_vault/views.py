@@ -1,8 +1,11 @@
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from wine_vault.models import Wine
-from wine_vault.serializers import WinesSerializer, ImageSerializer, WineCreateSerializer
+from wine_vault.models import Wine, Winery, WineType, Location, Rating
+from wine_vault.serializers import WinesSerializer, ImageSerializer, WineCreateSerializer, WinerySerializer, \
+    WineTypeSerializer, LocationSerializer, RatingSerializer
 import random
 
 
@@ -171,8 +174,7 @@ class AllWinesViewSet(viewsets.ModelViewSet):
         average = self.request.query_params.get("average")
         reviews = self.request.query_params.get("reviews")
         vintage = self.request.query_params.get("vintage")
-        wine_type = self.request.query_params.get("wine_type")
-
+        wine_type = self.request.query_params.getlist("wine_type")
         if name:
             queryset = queryset.filter(
                 name__icontains=name
@@ -185,11 +187,11 @@ class AllWinesViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(
                 location__region__icontains=region
             )
-
         if average:
             queryset = queryset.filter(
                 rating__average__icontains=average
             )
+
         if reviews:
             queryset = queryset.filter(
                 rating__reviews__icontains=reviews
@@ -200,10 +202,77 @@ class AllWinesViewSet(viewsets.ModelViewSet):
             )
         if wine_type:
             queryset = queryset.filter(
-                wine_type__type__icontains=wine_type
+                wine_type__type__in=wine_type
             )
 
         return queryset.distinct()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                name="name",
+                type=OpenApiTypes.STR,
+                description="Filter by name of wine name",
+            ),
+            OpenApiParameter(
+                name="country",
+                type=OpenApiTypes.STR,
+                description="Filter by wine country",
+            ),
+            OpenApiParameter(
+                name="region",
+                type=OpenApiTypes.STR,
+                description="Filter by wine region",
+            ),
+            OpenApiParameter(
+                name="average",
+                type=OpenApiTypes.STR,
+                description="Filter by wine average ",
+            ),
+            OpenApiParameter(
+                name="vintage",
+                type=OpenApiTypes.INT,
+                description="Filter by wine vintage(year)",
+            ),
+            OpenApiParameter(
+                name="wine_type",
+                type=OpenApiTypes.STR,
+                description="filtering by type of wine (white,red , rose ..)",
+            ),
+            OpenApiParameter(
+                name="reviews",
+                type=OpenApiTypes.STR,
+                description="filtering by reviews of wine",
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """filtering for query_params for wine by: name, country , region , average , vintage , wine_type , reviews """
+        return super().list(request, *args, **kwargs)
+
+
+class WineryModelViewSet(viewsets.ModelViewSet):
+    queryset = Winery.objects.all()
+    model = Winery
+    serializer_class = WinerySerializer
+
+
+class WineTypeModelViewSet(viewsets.ModelViewSet):
+    queryset = WineType.objects.all()
+    model = WineType
+    serializer_class = WineTypeSerializer
+
+
+class LocationModelViewSet(viewsets.ModelViewSet):
+    queryset = Location.objects.all()
+    model = Location
+    serializer_class = LocationSerializer
+
+
+class RatingModelViewSet(viewsets.ModelViewSet):
+    queryset = Rating.objects.all()
+    model = Rating
+    serializer_class = RatingSerializer
 
 
 class PickRandomBottleWine(generics.ListAPIView):

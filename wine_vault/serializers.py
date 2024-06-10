@@ -6,7 +6,7 @@ from wine_vault.models import Wine, Rating, Location, WineType, Winery
 class WinerySerializer(serializers.ModelSerializer):
     class Meta:
         model = Winery
-        fields = 'name'
+        fields = ('id', 'name')
 
 
 class RatingSerializer(serializers.ModelSerializer):
@@ -24,7 +24,13 @@ class LocationSerializers(serializers.ModelSerializer):
 class WineTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = WineType
-        fields = ("type",)
+        fields = ("id", "type",)
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = ("id", "country", "region")
 
 
 class WinesSerializer(serializers.ModelSerializer):
@@ -34,13 +40,14 @@ class WinesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Wine
-        fields = ("name", "vintage", "winery", "location", "rating", "image_url", "wine_type", "image_upload")
+        fields = ("name", "vintage", "winery", "location", "rating", "image_url", "wine_type", "image_upload", "price",
+                  "preferences")
 
 
 class WineCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wine
-        fields = ("name", "vintage", "location", "rating", "winery", "image_url", "wine_type", "image_upload")
+        fields = ("name", "vintage", "location", "rating", "winery", "image_url", "wine_type", "image_upload" , "preferences")
 
     def create(self, validated_data):
         return Wine.objects.create(**validated_data)
