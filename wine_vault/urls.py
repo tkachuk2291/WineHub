@@ -20,7 +20,7 @@ router.register("location", LocationModelViewSet, basename="location"),
 router.register("rating", RatingModelViewSet, basename="rating"),
 
 urlpatterns = [path("", include(router.urls)),
-               path("random-bottle-wine", PickRandomBottleWine.as_view(), name="random-bottle"),
+               path("random-bottle-wine/", PickRandomBottleWine.as_view(), name="random-bottle"),
                path("bestsellers-three-bottle-wine", BestSellers.as_view(), name="bestSellers-three-bottle"),
                ]
 app_name = "wine_vault"

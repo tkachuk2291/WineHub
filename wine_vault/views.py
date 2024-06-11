@@ -237,8 +237,11 @@ class AllWinesViewSet(viewsets.ModelViewSet):
             OpenApiParameter(
                 name="wine_type",
                 type=OpenApiTypes.STR,
-                description="filtering by type of wine (white,red , rose ..)",
-            ),
+                description="Filter by type of wine (white, red, rose, etc.). Can be used multiple times for multiple types.",
+                explode=False,
+                style="form",
+            )
+            ,
             OpenApiParameter(
                 name="reviews",
                 type=OpenApiTypes.STR,

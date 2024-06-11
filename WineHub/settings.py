@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['locallhost', 'e047-176-37-22-78.ngrok-free.app', "127.0.0.1"]
+ALLOWED_HOSTS = ['locallhost', '2239-178-54-63-27.ngrok-free.app', "127.0.0.1"]
 
 # Application definition
 
@@ -41,9 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     "drf_spectacular",
-    "wine_vault",
-    "user",
-    "storages",
+    "wine_vault", "wine_user", "storages"
 ]
 
 MIDDLEWARE = [
@@ -149,3 +147,5 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+
+AUTH_USER_MODEL = "wine_user.WineUser"

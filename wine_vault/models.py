@@ -41,6 +41,13 @@ class Rating(models.Model):
         return f"{self.average} ({self.reviews} reviews)"
 
 
+class Preferences(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
+
 def upload_to(instance, filename):
     wine_type = instance.wine_type.type
 
@@ -58,10 +65,10 @@ class Wine(models.Model):
     image_url = models.URLField(null=True)
     vintage = models.PositiveIntegerField(max_length=4, null=True)
     price = models.IntegerField()
-    preferences = models.JSONField()
+    preferences = models.ManyToManyField(Preferences, related_name='wine_preferences')
 
     def __str__(self):
-        return f"{self.name} ({self.year_of_release})"
+        return f"{self.name} ({self.vintage})"
 
     def save(self, *args, **kwargs):
         if not self.image_upload:
