@@ -1,6 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
-from wine_user.views import UserWineViewSet, UserFavoriteBottleViewSet
+from wine_user.views import UserWineViewSet, UserFavoriteBottleViewSet, RegisterView
 from django.urls import path, include
 
 router = DefaultRouter()
