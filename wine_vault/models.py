@@ -4,6 +4,8 @@ from pathlib import Path
 
 from rest_framework.exceptions import ValidationError
 
+from wine_vault.validators import validate_wine_name, validate_wine_vintage
+
 
 def starts_with_letter_validator(value):
     if not re.match(r'^[a-zA-Z]', value):
@@ -58,12 +60,12 @@ def upload_to(instance, filename):
 class Wine(models.Model):
     wine_type = models.ForeignKey(WineType, on_delete=models.CASCADE)
     winery = models.ForeignKey(Winery, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, validators=[starts_with_letter_validator])
+    name = models.CharField(max_length=30, validators=[validate_wine_name])
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     rating = models.ForeignKey(Rating, on_delete=models.CASCADE)
     image_upload = models.ImageField(upload_to=upload_to, null=True, blank=True)
     image_url = models.URLField(null=True)
-    vintage = models.PositiveIntegerField(max_length=4, null=True)
+    vintage = models.PositiveIntegerField(max_length=4, null=True, validators=[validate_wine_vintage])
     price = models.IntegerField()
     preferences = models.ManyToManyField(Preferences, related_name='wine_preferences')
 
