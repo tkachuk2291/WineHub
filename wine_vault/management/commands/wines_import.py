@@ -8,9 +8,9 @@ from wine_vault.models import Wine, Winery, Location, Rating, WineType, Preferen
 class Command(BaseCommand):
     help = 'Import wines from API'
 
+
     def handle(self, *args, **kwargs):
         vine_list_api = ["reds", "whites", "sparkling", "rose", "dessert", "port"]
-
         preferences_list = [
             "Steak", "Roasted meat", "Pasta with tomato sauce", "Baked chicken", "Lamb",
             "Medium-aged cheeses", "Salmon", "Duck", "Mushrooms", "Grilled chicken",
@@ -20,10 +20,8 @@ class Command(BaseCommand):
             "Blue cheeses", "Chocolate desserts", "Nuts", "Fruit pies", "Baklava",
             "Fruit salads", "Light cakes and pies", "Ice cream"
         ]
-
         for preference_num in preferences_list:
             Preferences.objects.get_or_create(name=preference_num)
-
         preferences_list_obj = list(Preferences.objects.all())
 
         for num in vine_list_api:

@@ -28,7 +28,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['locallhost', '2239-178-54-63-27.ngrok-free.app', "127.0.0.1"]
+ALLOWED_HOSTS = ['locallhost', 'baf8-176-37-22-78.ngrok-free.app', "127.0.0.1"]
 
 # Application definition
 
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     "drf_spectacular",
-    "wine_vault", "wine_user", "storages"
+    "wine_vault", "wine_user", "storages", "rest_framework_simplejwt"
 ]
 
 MIDDLEWARE = [
@@ -138,7 +138,10 @@ AWS_S3_SIGNATURE_VERSION = 's3v4'
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
 }
 
 SPECTACULAR_SETTINGS = {
@@ -147,5 +150,6 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
 }
+AUTHENTICATION_BACKENDS = ['wine_user.auth_backends.EmailBackend']
 
 AUTH_USER_MODEL = "wine_user.WineUser"

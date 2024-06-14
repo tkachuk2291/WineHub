@@ -1,6 +1,12 @@
 from rest_framework import serializers
 
-from wine_vault.models import Wine, Rating, Location, WineType, Winery
+from wine_vault.models import Wine, Rating, Location, WineType, Winery, Preferences
+
+
+class PreferencesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Preferences
+        fields = ('id', 'name')
 
 
 class WinerySerializer(serializers.ModelSerializer):
@@ -37,6 +43,8 @@ class WinesSerializer(serializers.ModelSerializer):
     rating = RatingSerializer()
     location = LocationSerializers()
     wine_type = WineTypeSerializer()
+    preferences = PreferencesSerializer(many=True)
+    winery = WinerySerializer()
 
     class Meta:
         model = Wine
@@ -47,7 +55,8 @@ class WinesSerializer(serializers.ModelSerializer):
 class WineCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wine
-        fields = ("name", "vintage", "location", "rating", "winery", "image_url", "wine_type", "image_upload" , "preferences")
+        fields = (
+        "name", "vintage", "location", "rating", "winery", "image_url", "wine_type", "image_upload", "preferences")
 
     def create(self, validated_data):
         return Wine.objects.create(**validated_data)

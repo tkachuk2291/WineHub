@@ -2,6 +2,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from wine_vault.models import Wine, Winery, WineType, Location, Rating
 from wine_vault.serializers import WinesSerializer, ImageSerializer, WineCreateSerializer, WinerySerializer, \
@@ -153,6 +154,7 @@ class PortWineViewSet(viewsets.ModelViewSet):
 
 
 class AllWinesViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     model = Wine
     serializer_class = WinesSerializer
     Wine.objects.all()
