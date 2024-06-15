@@ -35,3 +35,4 @@ def validate_wine_vintage(value):
 
     if len(value) < 4:
         raise ValidationError(f"'{value}' must have at least 4 characters")
+
