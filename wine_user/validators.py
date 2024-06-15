@@ -4,6 +4,11 @@ from django.core.exceptions import ValidationError
 
 
 def validate_first_last_name(value, field_name, error, validation_type=None):
+    allowed_chars = {"'", "-"}
+    special_chars = set(c for c in value if not c.isalnum())  # Собираем все специальные символы из строки
+    if not special_chars.issubset(allowed_chars):
+        raise ValidationError(f"'{value}' contains invalid special characters. Allowed characters are {allowed_chars}")
+
     if not any(char.isupper() for char in value):
         raise error(f"{field_name} '{value}' must have uppercase Latin characters",
                     )
@@ -16,12 +21,9 @@ def validate_first_last_name(value, field_name, error, validation_type=None):
     if value[0:1] == "." or value[-1:] == ".":
         raise error(f"{field_name} '{value}' must not end with dote",
                     )
-    if not any(char in ["'", "-"] for char in value):
-        raise error(f"{field_name} '{value}' must have special characters(', space hyphen)",
 
-                    )
-    if not re.findall(r'\d+', value):
-        raise error(f"{field_name} '{value}' must have digits) , in {validation_type}",
+    if len(re.findall(r'\d+', value)) > 1 :
+        raise error(f"In {field_name} only one digit is allowed.",
                     )
     if len(value) < 1:
         raise error(f"{field_name} '{value}' must have one and more chars")

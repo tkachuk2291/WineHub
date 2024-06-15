@@ -21,6 +21,9 @@ class UserFavoriteBottleViewSet(viewsets.ModelViewSet):
     model = UserFavoriteBottle
     queryset = UserFavoriteBottle.objects.all()
     serializer_class = UserFavoriteBottleSerializer
+    def get_queryset(self):
+        user = self.request.user
+        return UserFavoriteBottle.objects.filter(user=user)
 
 
 class RegisterView(APIView):
