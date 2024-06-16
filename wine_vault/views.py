@@ -51,6 +51,8 @@ def filtering_query(type_wine_filtering, params):
 
 
 class RedWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
     serializer_class = WinesSerializer
 
@@ -76,6 +78,8 @@ class RedWineViewSet(viewsets.ModelViewSet):
 
 
 class WhiteWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -92,6 +96,8 @@ class WhiteWineViewSet(viewsets.ModelViewSet):
 
 
 class SparklingWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -108,6 +114,8 @@ class SparklingWineViewSet(viewsets.ModelViewSet):
 
 
 class RoseWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -124,6 +132,8 @@ class RoseWineViewSet(viewsets.ModelViewSet):
 
 
 class DessertWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -140,6 +150,7 @@ class DessertWineViewSet(viewsets.ModelViewSet):
 
 
 class PortWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
     model = Wine
 
     def get_serializer_class(self):

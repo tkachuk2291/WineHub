@@ -17,6 +17,7 @@ def validate_wine_name(value):
     if not re.match(r'^[a-zA-Z]', value):
         raise ValidationError('The value must start with a letter.')
 
+
 def validate_wine_vintage(value):
     if not re.findall(r'\d+', value):
         raise ValidationError(f"'{value}' must have digits )")

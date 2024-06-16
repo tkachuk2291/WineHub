@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
 
 from wine_user.models import WineUser, UserFavoriteBottle
-from wine_user.serializers import UserWineSerializer, UserFavoriteBottleSerializer
+from wine_user.serializers import UserWineSerializer, UserFavoriteBottleSerializer, UserFavoriteBottleAddSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from wine_user.serializers import TokenObtainPairSerializer
@@ -24,6 +24,18 @@ class UserFavoriteBottleViewSet(viewsets.ModelViewSet):
     model = UserFavoriteBottle
     queryset = UserFavoriteBottle.objects.all()
     serializer_class = UserFavoriteBottleSerializer
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return UserFavoriteBottleSerializer
+        elif self.action == "retrieve":
+            return UserFavoriteBottleAddSerializer
+        elif self.action == "create":
+            return UserFavoriteBottleAddSerializer
+        return UserFavoriteBottleSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     def get_queryset(self):
         user = self.request.user

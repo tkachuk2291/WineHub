@@ -1,6 +1,8 @@
 import re
 
 from django.core.exceptions import ValidationError
+from rest_framework import serializers
+
 
 
 def validate_first_last_name(value, field_name, error):
@@ -72,3 +74,11 @@ def email_validate(value):
     if len(email_domain_part) > 10:
         raise ValidationError(
             f"'domain part {value.split('@')[0]}' must be 10 characters or less ,current length: {len(email_local_part)}")
+
+
+# def validate_user_favorite_bottle(self, attrs):
+#     user = self.context['request'].user
+#     wine = attrs['wine']
+#     if UserFavoriteBottle.objects.filter(user=user, wine=wine).exists():
+#         raise serializers.ValidationError("This wine is already in the user's favorites.")
+#     return attrs

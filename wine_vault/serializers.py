@@ -39,6 +39,12 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ("id", "country", "region")
 
 
+class WineFavoriteBottleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wine
+        fields = ("id", "name")
+
+
 class WinesSerializer(serializers.ModelSerializer):
     rating = RatingSerializer()
     location = LocationSerializers()
@@ -56,7 +62,7 @@ class WineCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wine
         fields = (
-        "name", "vintage", "location", "rating", "winery", "image_url", "wine_type", "image_upload", "preferences")
+            "name", "vintage", "location", "rating", "winery", "image_url", "wine_type", "image_upload", "preferences")
 
     def create(self, validated_data):
         return Wine.objects.create(**validated_data)
