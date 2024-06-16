@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 
 from wine_user.models import WineUser, UserFavoriteBottle
 from wine_user.validators import password_validate
-from wine_vault.serializers import WinerySerializer
+from wine_vault.serializers import WinerySerializer, WinesSerializer, WineFavoriteBottleSerializer
 
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
@@ -11,12 +11,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer as Jw
 
 class TokenObtainPairSerializer(JwtTokenObtainPairSerializer):
     username_field = get_user_model().USERNAME_FIELD
-
-
-# class UserSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = get_user_model()
-#         fields = ('email', 'password')
 
 
 class UserWineSerializer(serializers.ModelSerializer):
@@ -43,9 +37,15 @@ class UserWineSerializer(serializers.ModelSerializer):
 
 
 class UserFavoriteBottleSerializer(serializers.ModelSerializer):
-    wine = WinerySerializer
-    user = UserWineSerializer
+    wine = WinerySerializer(read_only=True)
 
     class Meta:
         model = UserFavoriteBottle
-        fields = ("id", "user", "wine")
+        fields = ("id", "wine")
+
+
+class UserFavoriteBottleAddSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserFavoriteBottle
+        fields = ("id", "wine")

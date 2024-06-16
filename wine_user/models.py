@@ -42,7 +42,7 @@ class CustomUserManager(BaseUserManager):
 
 class WineUser(AbstractUser):
     username = None
-    email = models.EmailField(_('email address'), unique=True , validators=[email_validate])
+    email = models.EmailField(_('email address'), unique=True, validators=[email_validate])
     first_name = models.CharField(max_length=30, validators=[validate_first_name])
     last_name = models.CharField(max_length=30, validators=[validate_last_name])
     age = models.IntegerField(max_length=2, validators=[validate_age], null=True, blank=True)
@@ -52,7 +52,6 @@ class WineUser(AbstractUser):
 
     def __str__(self):
         return self.email
-
 
 
 class UserFavoriteBottle(models.Model):

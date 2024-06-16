@@ -4,6 +4,8 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from permissions import IsAdminOrReadOnly
 from wine_vault.models import Wine, Winery, WineType, Location, Rating
 from wine_vault.serializers import WinesSerializer, ImageSerializer, WineCreateSerializer, WinerySerializer, \
     WineTypeSerializer, LocationSerializer, RatingSerializer
@@ -49,6 +51,8 @@ def filtering_query(type_wine_filtering, params):
 
 
 class RedWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
     serializer_class = WinesSerializer
 
@@ -74,6 +78,8 @@ class RedWineViewSet(viewsets.ModelViewSet):
 
 
 class WhiteWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -90,6 +96,8 @@ class WhiteWineViewSet(viewsets.ModelViewSet):
 
 
 class SparklingWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -106,6 +114,8 @@ class SparklingWineViewSet(viewsets.ModelViewSet):
 
 
 class RoseWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -122,6 +132,8 @@ class RoseWineViewSet(viewsets.ModelViewSet):
 
 
 class DessertWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     model = Wine
 
     def get_serializer_class(self):
@@ -138,6 +150,7 @@ class DessertWineViewSet(viewsets.ModelViewSet):
 
 
 class PortWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
     model = Wine
 
     def get_serializer_class(self):
@@ -154,7 +167,7 @@ class PortWineViewSet(viewsets.ModelViewSet):
 
 
 class AllWinesViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnly]
     model = Wine
     serializer_class = WinesSerializer
     Wine.objects.all()
@@ -257,30 +270,39 @@ class AllWinesViewSet(viewsets.ModelViewSet):
 
 
 class WineryModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Winery.objects.all()
     model = Winery
     serializer_class = WinerySerializer
 
 
 class WineTypeModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     queryset = WineType.objects.all()
     model = WineType
     serializer_class = WineTypeSerializer
 
 
 class LocationModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     queryset = Location.objects.all()
     model = Location
     serializer_class = LocationSerializer
 
 
 class RatingModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     queryset = Rating.objects.all()
     model = Rating
     serializer_class = RatingSerializer
 
 
 class PickRandomBottleWine(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+
     model = Wine
     serializer_class = WinesSerializer
 
@@ -289,6 +311,7 @@ class PickRandomBottleWine(generics.ListAPIView):
 
 
 class BestSellers(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     model = Wine
     serializer_class = WinesSerializer
 
