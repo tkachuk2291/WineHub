@@ -19,7 +19,7 @@ def validate_first_last_name(value, field_name, error):
 
 
 def validate_first_name(value):
-    validate_first_last_name(value, field_name="first_name", error=ValidationError, validation_type="model")
+    validate_first_last_name(value, field_name="first_name", error=ValidationError)
 
 
 def validate_last_name(value):

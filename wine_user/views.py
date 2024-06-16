@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
-from rest_framework.response import Response
 
 from wine_user.models import WineUser, UserFavoriteBottle
 from wine_user.serializers import UserWineSerializer, UserFavoriteBottleSerializer
@@ -12,29 +13,32 @@ from wine_user.serializers import TokenObtainPairSerializer
 
 
 class UserWineViewSet(viewsets.ModelViewSet):
+    permission_classes = [AllowAny]
     queryset = WineUser.objects.all()
     model = WineUser
     serializer_class = UserWineSerializer
 
 
 class UserFavoriteBottleViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     model = UserFavoriteBottle
     queryset = UserFavoriteBottle.objects.all()
     serializer_class = UserFavoriteBottleSerializer
+
     def get_queryset(self):
         user = self.request.user
         return UserFavoriteBottle.objects.filter(user=user)
 
 
 class RegisterView(APIView):
-    http_method_names = ['post']
+    serializer_class = UserWineSerializer
 
-    def post(self, *args, **kwargs):
-        serializer = UserWineSerializer(data=self.request.data)
+    def post(self, request, *args, **kwargs):
+        serializer = UserWineSerializer(data=request.data)
         if serializer.is_valid():
             get_user_model().objects.create_user(**serializer.validated_data)
-            return Response(status=HTTP_201_CREATED)
-        return Response(status=HTTP_400_BAD_REQUEST, data={'errors': serializer.errors})
+            return JsonResponse({"message": "Account created successfully"}, status=HTTP_201_CREATED)
+        return JsonResponse({"errors": serializer.errors}, status=HTTP_400_BAD_REQUEST)
 
 
 class EmailTokenObtainPairView(TokenObtainPairView):

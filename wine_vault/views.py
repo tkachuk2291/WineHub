@@ -4,6 +4,8 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from permissions import IsAdminOrReadOnly
 from wine_vault.models import Wine, Winery, WineType, Location, Rating
 from wine_vault.serializers import WinesSerializer, ImageSerializer, WineCreateSerializer, WinerySerializer, \
     WineTypeSerializer, LocationSerializer, RatingSerializer
@@ -154,7 +156,7 @@ class PortWineViewSet(viewsets.ModelViewSet):
 
 
 class AllWinesViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminOrReadOnly]
     model = Wine
     serializer_class = WinesSerializer
     Wine.objects.all()
@@ -257,30 +259,39 @@ class AllWinesViewSet(viewsets.ModelViewSet):
 
 
 class WineryModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
     queryset = Winery.objects.all()
     model = Winery
     serializer_class = WinerySerializer
 
 
 class WineTypeModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     queryset = WineType.objects.all()
     model = WineType
     serializer_class = WineTypeSerializer
 
 
 class LocationModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     queryset = Location.objects.all()
     model = Location
     serializer_class = LocationSerializer
 
 
 class RatingModelViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAdminOrReadOnly]
+
     queryset = Rating.objects.all()
     model = Rating
     serializer_class = RatingSerializer
 
 
 class PickRandomBottleWine(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+
     model = Wine
     serializer_class = WinesSerializer
 
@@ -289,6 +300,7 @@ class PickRandomBottleWine(generics.ListAPIView):
 
 
 class BestSellers(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
     model = Wine
     serializer_class = WinesSerializer
 
