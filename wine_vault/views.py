@@ -2,7 +2,7 @@ from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 
 from permissions import IsAdminOrReadOnly
@@ -51,7 +51,7 @@ def filtering_query(type_wine_filtering, params):
 
 
 class RedWineViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminOrReadOnly]
+    permission_classes = [AllowAny]
 
     model = Wine
     serializer_class = WinesSerializer
