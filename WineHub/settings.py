@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -153,3 +154,8 @@ SPECTACULAR_SETTINGS = {
 AUTHENTICATION_BACKENDS = ['wine_user.auth_backends.EmailBackend']
 
 AUTH_USER_MODEL = "wine_user.WineUser"
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=5),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=14),
+}
