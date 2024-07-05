@@ -1,5 +1,7 @@
 FROM python:3.11-slim
 LABEL maintainer="tkacuk2291@gmail.com"
+ENV PIP_ROOT_USER_ACTION=ignore
+
 ENV PYTHONBUFFERED 1
 
 WORKDIR /app
