@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['locallhost', '5e6d-178-54-63-27.ngrok-free.app', "127.0.0.1"]
+ALLOWED_HOSTS = ['locallhost', '52f0-178-54-63-27.ngrok-free.app', "127.0.0.1", "http://192.168.56.1:3000/"]
 
 # Application definition
 
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware' ,
 ]
 
 ROOT_URLCONF = 'WineHub.urls'

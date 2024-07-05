@@ -168,7 +168,7 @@ class PortWineViewSet(viewsets.ModelViewSet):
 
 
 class AllWinesViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAdminOrReadOnly]
+    # permission_classes = [IsAdminOrReadOnly]
     model = Wine
     serializer_class = WinesSerializer
     Wine.objects.all()

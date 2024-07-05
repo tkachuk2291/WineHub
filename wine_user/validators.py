@@ -4,9 +4,8 @@ from django.core.exceptions import ValidationError
 from rest_framework import serializers
 
 
-
 def validate_first_last_name(value, field_name, error):
-    allowed_pattern = re.compile(r"^[a-zA-Z0-9 '-]*$")
+    allowed_pattern = re.compile(r"^[a-zA-Z0-9 '.-]*$")
     if value[0:1] == "." or value[0:1] == ".":
         raise error(f"{field_name} '{value}' must not begin with dote",
                     )
@@ -57,6 +56,9 @@ def email_validate(value):
     if not allowed_pattern.match(value):
         raise ValidationError(f"'{value}' must have only special characters[' ! ? * () hyphen]")
 
+    if "@" not in value:
+        raise ValidationError(f"'{value}' must have @ character")
+
     if value[0:1] == "." or value[0:1] == ".":
         raise ValidationError(f"'{value}' must not begin with dote",
                               )
@@ -74,7 +76,6 @@ def email_validate(value):
     if len(email_domain_part) > 10:
         raise ValidationError(
             f"'domain part {value.split('@')[0]}' must be 10 characters or less ,current length: {len(email_local_part)}")
-
 
 # def validate_user_favorite_bottle(self, attrs):
 #     user = self.context['request'].user
